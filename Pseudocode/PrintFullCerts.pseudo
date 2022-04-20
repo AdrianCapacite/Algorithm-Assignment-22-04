@@ -46,7 +46,7 @@ END FUNCTION
 FUNCTION PrintFullCerts(employeeList[] AS STRUCT Employees, certList[] AS STRUCT Certifications, employeeCount, certCount)
 
     // Search for full certs
-    DECLARE 
+    DECLARE fullCerts[certCount]
     PRINT "Employee ID, First Name, Surname, Line" // Row headers
     FOR i FROM 0 TO certCount
         IF certList[i].certificationID EQUALS 7
@@ -61,7 +61,6 @@ FUNCTION PrintFullCerts(employeeList[] AS STRUCT Employees, certList[] AS STRUCT
             END FOR
         END IF
     END FOR
-    
 
     PROMPT "Press enter to continue..."
 END FUNCTION

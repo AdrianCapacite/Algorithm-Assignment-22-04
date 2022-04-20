@@ -118,6 +118,7 @@ typedef struct CERTIFICATION
 void PrintEmployeeList(EMPLOYEE *employeeList, int size);
 void SortEmployees(EMPLOYEE *employeeList, int start, int end);
 void MergeEmployees(EMPLOYEE *employeeList, int start, int mid, int end);
+void CombineTeams(EMPLOYEE *teams[], EMPLOYEE *employeeList, int teamMemberCount, int teamCount);
 int SearchBySurname(EMPLOYEE *employeeList, STRING30 key, int start, int end);
 
 // Option functions
@@ -125,7 +126,7 @@ void ProcessTeams(EMPLOYEE *teams[], EMPLOYEE *employeeList, int teamMemberCount
 void PrintFullCerts(EMPLOYEE *employeeList, CERTIFICATION *certList, int employeeCount, int certCount);
 void GetEmployeeBySurname(EMPLOYEE *employeeList, int count);
 
-/* Global varables prefix: g_*/
+/* Global varables prefix: g_ */
 // 4 Teams of 6 employees
 EMPLOYEE g_team1[TEAM_MEMBER_COUNT] = {
     {8, "Hanae", "Mejia", 1},
@@ -393,6 +394,30 @@ void MergeEmployees(EMPLOYEE *employeeList, int start, int mid, int end)
     free(tempL);
     free(tempR);
 }
+
+// Combine sorted teams into one sorted array
+// Params: *teams[] - array of teams to combine
+//         employeeList[] - array of employees
+//         teamMemberCount - number of members in each team
+//         teamCount - number of teams
+void CombineTeams(EMPLOYEE *teams[], EMPLOYEE *employeeList, int teamMemberCount, int teamCount)
+{
+    int combinedSize = teamCount * teamMemberCount;
+    // Concatenate teams into one array
+    for (int i = 0; i < teamCount; i++)
+    {
+        for (int j = 0; j < teamMemberCount; j++)
+        {
+            employeeList[i * teamMemberCount + j] = teams[i][j];
+        }
+    }
+    // Merge employeeList
+    for (int i = 0; i < teamCount - 1; i++)
+    {
+        MergeEmployees(employeeList, 0, (i + 1) * teamMemberCount - 1, (i + 2) * teamMemberCount - 1);
+    }
+}
+
 // Search employee list by surname
 // Params: employeeList[] - array of employees to search
 //         key - surname to search for
@@ -440,7 +465,7 @@ void ProcessTeams(EMPLOYEE *teams[], EMPLOYEE *employeeList, int teamMemberCount
     {
         SortEmployees(teams[i], 0, teamMemberCount - 1);
     }
-    
+    // Display each team separately
     for (int i = 0; i < teamCount; i++)
     {
         printf("Team %d:\n", i + 1);
@@ -450,27 +475,11 @@ void ProcessTeams(EMPLOYEE *teams[], EMPLOYEE *employeeList, int teamMemberCount
     PromptContinue();
     PrintSoftDivider();
 
-    // Combine teams to employeeList
+    // Combine teams to employeeList and display 
     printf("\nCombining teams...\n");
-    for (int i = 0; i < teamCount; i++)
-    {
-        for (int j = 0; j < teamMemberCount; j++)
-        {
-            employeeList[i * teamMemberCount + j] = teams[i][j];
-        }
-    }
-    // Merge employeeList
-    int combinedSize = teamCount * teamMemberCount;
-    for (int i = 0; i < teamCount - 1; i++)
-    {
-        MergeEmployees(employeeList, 0, (i + 1) * teamMemberCount - 1, (i + 2) * teamMemberCount - 1);
-    }
-    
-    // Print employeeList
+    CombineTeams(teams, employeeList, teamMemberCount, teamCount);
     printf("\nCombined teams list:\n");
-    PrintEmployeeList(employeeList, combinedSize);
-
-    // Display combined teams
+    PrintEmployeeList(employeeList, teamCount * teamMemberCount);
 }
 void PrintFullCerts(EMPLOYEE *employeeList, CERTIFICATION *certList, int employeeCount, int certCount)
 {
