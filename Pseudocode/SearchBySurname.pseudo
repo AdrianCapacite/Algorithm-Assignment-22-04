@@ -1,0 +1,60 @@
+/*
+    Algorithms Assignment - SearchBySurname
+    Pseudocode for function SearchBySurname:
+    Prints person matching the surname given
+    Author: Adrian Thomas Capacite
+    Date: 16 / 04 / 2022
+*/
+
+// Struct Templates
+STRUCT Employee{employeeID, firstName, surname, line}
+
+FUNCTION getEmployeeBySurname(employeeList[], count)
+    DECLARE surname
+    DECLARE index
+    // Prompt user for surname
+    DO
+        PROMPT "Enter surname: " 
+        ASSIGN surname TO INPUT
+        IF SURNAME EQUALS ""
+            PRINT "Surname cannot be blank"
+        END IF
+    WHILE SURNAME EQUALS ""
+    
+    // Search for employee
+    ASSIGN index TO CALL searchEmployeeBySurname(employeeList, count, surname)
+    IF index EQUALS -1
+        PRINT "Employee not found"
+    ELSE
+        PRINT "Employee found: "
+        PRINT Employee details at employeeList[index]
+
+    PROMPT "Press enter to continue"
+END 
+
+// Prints person matching the surname given
+// Uses binary search to find the person
+// Employee array must be sorted by surname
+// Params: employees[]::Struct Employee{employeeID, firstName, surname, line}
+//         key
+//         start
+//         end
+// Returns: index of employee matching the surname else -1 if not found
+FUNCTION SearchBySurname(employeeList[], key, start, end)
+    IF end GREATER-OR-EQUAL start
+        // Recursive case
+        DECLARE mid TO (start + end) / 2
+        IF employeeList[mid].surname EQUALS key
+            RETURN mid
+        END IF
+
+        IF employeeList[mid].surname GREATER key
+            RETURN CALL SearchBySurname(employeeList, key, start, mid - 1)
+        ELSE
+            RETURN CALL SearchBySurname(employeeList, key, mid + 1, end)
+        END IF
+    END IF
+
+    // Base case
+    RETURN -1
+END FUNCTION 
