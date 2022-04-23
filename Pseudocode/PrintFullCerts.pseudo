@@ -7,46 +7,17 @@
 */
 
 // Struct Templates:
-STRUCT Employee{employeeID, firstName, surname, line}
-STRUCT Certification{employeeID, certificationID}
+STRUCT EMPLOYEE{employeeID, firstName, surname, line}
+STRUCT CERTIFICATION{employeeID, certificationID}
 
-// Prints a list of employees ceritified for all lines
-// Params: Employees[]::Struct Employee{employeeeID, firstName, surname, line}
-//         certs[]::Struct Certification{employeeID, certificationID}
-FUNCTION PrintFullCerts(employees[] AS STRUCT employeeList, certList[] AS STRUCT Certifications, employeeCount, certCount)
-
-    // Create a list of certifications which has certificationID value of 7
-    DECLARE fullCerts[certCount]
-    DECLARE j TO 0
-    FOR i FROM 0 TO certCount
-        IF certs[i].certificationID EQUALS 7 
-            ASSIGN fullCerts[j] TO certList[i]
-            INCREMENT j
-        END IF
-    END FOR
-    
-    // For each certification in fullCerts, print the employee's name
-    PRINT "Employees with full certification:"
-    PRINT "Employee ID, First Name, Surname, Line" // Row headers
-    FOR i FROM 0 TO j
-        FOR j FROM 0 TO employeeCount
-            IF employeeList[j].employeeID EQUALS fullCerts[i].employeeID
-                PRINT employeeList[j].employeeID, employeeList[j].firstName, employeeList[j].surname, employeeList[j].line
-            ELSE
-                PRINT "N/A"
-            END IF
-        END FOR
-    END FOR
-
-    PROMPT "Press enter to continue..."
-END FUNCTION
-
-// Refractored
-
+// Searches certifications for full certs where earnedCertID has a value of 7 and prints the employee's name
+// Params: employeeList[]::Struct EMPLOYEE{employeeeID, firstName, surname, line} - array of employees
+//         certList[]::Struct CERTIFICATION{employeeID, certificationID} - array of certifications to search
+//         employeeCount - number of employees
+//         certCount - number of certifications
 FUNCTION PrintFullCerts(employeeList[] AS STRUCT Employees, certList[] AS STRUCT Certifications, employeeCount, certCount)
-
     // Search for full certs
-    DECLARE fullCerts[certCount]
+
     PRINT "Employee ID, First Name, Surname, Line" // Row headers
     FOR i FROM 0 TO certCount
         IF certList[i].certificationID EQUALS 7
@@ -61,6 +32,4 @@ FUNCTION PrintFullCerts(employeeList[] AS STRUCT Employees, certList[] AS STRUCT
             END FOR
         END IF
     END FOR
-
-    PROMPT "Press enter to continue..."
 END FUNCTION

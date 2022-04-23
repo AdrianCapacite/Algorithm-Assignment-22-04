@@ -7,8 +7,11 @@
 */
 
 // Struct Templates
-STRUCT Employee{employeeID, firstName, surname, line}
+STRUCT EMPLOYEE{employeeID, firstName, surname, line}
 
+// Prompts user for surname to search then searches employee list for employees with that surname using binary search and prints the employee's details
+// Params: employeeList[]::Struct EMPLOYEE{employeeeID, firstName, surname, line} - array of employees
+//         employeeCount - number of employees
 FUNCTION getEmployeeBySurname(employeeList[], count)
     DECLARE surname
     DECLARE index
@@ -28,17 +31,15 @@ FUNCTION getEmployeeBySurname(employeeList[], count)
     ELSE
         PRINT "Employee found: "
         PRINT Employee details at employeeList[index]
-
-    PROMPT "Press enter to continue"
+    END IF
 END 
 
-// Prints person matching the surname given
 // Uses binary search to find the person
 // Employee array must be sorted by surname
-// Params: employees[]::Struct Employee{employeeID, firstName, surname, line}
-//         key
-//         start
-//         end
+// Params: employees[]::Struct Employee{employeeID, firstName, surname, line} - array of employees
+//         key - surname to search for
+//         start - start index of array
+//         end - end index of array
 // Returns: index of employee matching the surname else -1 if not found
 FUNCTION SearchBySurname(employeeList[], key, start, end)
     IF end GREATER-OR-EQUAL start
